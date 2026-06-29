@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#C4614A">
+
+  <title>
+    {%- if page_title == blank -%}
+      {{ shop.name }} — Premium Fox Nuts from Bihar
+    {%- else -%}
+      {{ page_title }} | {{ shop.name }}
+    {%- endif -%}
+  </title>
+
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {{ content_for_header }}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+</head>
+<body class="template-{{ template | replace: '.', '-' | replace: '/', '-' }}">
+
+  {%- section 'announcement-bar' -%}
+  {%- section 'header' -%}
+
+  <main id="main-content" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {%- section 'footer' -%}
+
+  <!-- Cart Drawer Overlay -->
+  <div id="cart-overlay" class="cart-overlay" aria-hidden="true"></div>
+
+  <!-- Cart Drawer -->
+  <div id="cart-drawer" class="cart-drawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
+    <div class="cart-drawer__header">
+      <div class="cart-drawer__title">
+        {%- render 'cart-icon' -%}
+        Your Cart
+        <span id="cart-drawer-count" class="cart-drawer__count">{{ cart.item_count }}</span>
+      </div>
+      <div class="cart-drawer__header-actions">
+        <a href="{{ routes.cart_url }}" class="cart-drawer__view-full">View full cart &rarr;</a>
+        <button class="cart-drawer__close" id="cart-drawer-close" aria-label="Close cart">&times;</button>
+      </div>
+    </div>
+    <div id="cart-drawer-items" class="cart-drawer__items">
+      {%- if cart.item_count == 0 -%}
+        <div class="cart-drawer__empty">
+          <div class="cart-drawer__empty-icon">🛒</div>
+          <p class="cart-drawer__empty-title">Your cart is empty</p>
+          <p class="cart-drawer__empty-desc">Add your favourite Tal Makhana flavours to get started.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">Shop Now &rarr;</a>
+        </div>
+      {%- else -%}
+        {%- for item in cart.items -%}
+          <div class="cart-drawer__item" data-item-key="{{ item.key }}">
+            <div class="cart-drawer__item-img">
+              {%- if item.image -%}
+                {{ item.image | image_url: width: 100 | image_tag: alt: item.title, loading: 'lazy' }}
+              {%- else -%}
+                <span class="cart-drawer__item-placeholder">🌰</span>
+              {%- endif -%}
+            </div>
+            <div class="cart-drawer__item-body">
+              <div class="cart-drawer__item-title">{{ item.product.title }}</div>
+              {%- unless item.product.has_only_default_variant -%}
+                <div class="cart-drawer__item-variant">{{ item.variant.title }}</div>
+              {%- endunless -%}
+              <div class="cart-drawer__item-price-row">
+                <div class="cart-drawer__item-qty-ctrl">
+                  <button class="qty-btn" data-action="decrease" data-key="{{ item.key }}">&#8722;</button>
+                  <span class="qty-num">{{ item.quantity }}</span>
+                  <button class="qty-btn" data-action="increase" data-key="{{ item.key }}">&#43;</button>
+                </div>
+                <div class="cart-drawer__item-price">{{ item.final_line_price | money }}</div>
+              </div>
+              <button class="cart-drawer__item-remove" data-key="{{ item.key }}">&#10005; Remove</button>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+    <div id="cart-drawer-footer" class="cart-drawer__footer" {% if cart.item_count == 0 %}style="display:none;"{% endif %}>
+      <div class="cart-drawer__subtotal-row">
+        <span>Subtotal</span>
+        <span id="drawer-subtotal" class="cart-drawer__subtotal-amount">{{ cart.total_price | money }}</span>
+      </div>
+      {%- if cart.total_price >= 49900 -%}
+        <div class="cart-drawer__free-delivery">
+          🚚 You qualify for <strong>FREE delivery!</strong>
+        </div>
+      {%- else -%}
+        <div class="cart-drawer__delivery-progress">
+          Add {{ 49900 | minus: cart.total_price | money }} more for FREE delivery
+        </div>
+      {%- endif -%}
+      <a href="{{ routes.checkout_url }}" class="btn btn--primary cart-drawer__checkout-btn">
+        Proceed to Checkout &rarr;
+      </a>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn--outline cart-drawer__continue-btn">
+        Continue Shopping
+      </a>
+    </div>
+  </div>
+
+  {{ 'theme.js' | asset_url | script_tag }}
+
+</body>
+</html>
