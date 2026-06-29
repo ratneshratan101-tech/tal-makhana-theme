@@ -1,0 +1,30 @@
+{%- if section.settings.show_announcement -%}
+<div class="announcement-bar" role="banner" aria-label="Site announcement">
+  <span>{{ section.settings.text_1 }}</span>
+  {%- if section.settings.text_2 != blank -%}
+    <span class="announcement-bar__sep">|</span>
+    <span>{{ section.settings.text_2 }}</span>
+  {%- endif -%}
+  {%- if section.settings.text_3 != blank -%}
+    <span class="announcement-bar__sep">|</span>
+    <span>{{ section.settings.text_3 }}</span>
+  {%- endif -%}
+  {%- if section.settings.show_close -%}
+    <button class="announcement-bar__close" aria-label="Close announcement">&times;</button>
+  {%- endif -%}
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {"type": "checkbox","id": "show_announcement","label": "Show Announcement Bar","default": true},
+    {"type": "text","id": "text_1","label": "Message 1","default": "🚚 Free delivery on orders above ₹499"},
+    {"type": "text","id": "text_2","label": "Message 2","default": "🌾 Direct from Bihar farms"},
+    {"type": "text","id": "text_3","label": "Message 3","default": "✅ Grade A Makhana — No Preservatives"},
+    {"type": "checkbox","id": "show_close","label": "Show close button","default": true}
+  ],
+  "presets": [{"name": "Announcement Bar"}]
+}
+{% endschema %}
