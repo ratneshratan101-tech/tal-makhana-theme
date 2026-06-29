@@ -15,20 +15,6 @@
     },
     "benefits-bar": {
       "type": "benefits-bar",
-      "settings": {
-        "icon_1": "🚚",
-        "text_1": "Free delivery above ₹499",
-        "icon_2": "🌿",
-        "text_2": "No preservatives added",
-        "icon_3": "🔬",
-        "text_3": "Lab tested every batch",
-        "icon_4": "📋",
-        "text_4": "FSSAI Certified",
-        "icon_5": "🔄",
-        "text_5": "7-Day easy returns",
-        "section_heading": "Goodness in Every Bite",
-        "section_desc": "Makhana is one of nature's most complete superfoods — and we source only the finest Grade A from Bihar's pristine ponds."
-      },
       "blocks": {
         "benefit-1": {
           "type": "benefit",
@@ -79,7 +65,21 @@
           }
         }
       },
-      "blocks_order": ["benefit-1", "benefit-2", "benefit-3", "benefit-4", "benefit-5", "benefit-6"]
+      "block_order": ["benefit-1", "benefit-2", "benefit-3", "benefit-4", "benefit-5", "benefit-6"],
+      "settings": {
+        "icon_1": "🚚",
+        "text_1": "Free delivery above ₹499",
+        "icon_2": "🌿",
+        "text_2": "No preservatives added",
+        "icon_3": "🔬",
+        "text_3": "Lab tested every batch",
+        "icon_4": "📋",
+        "text_4": "FSSAI Certified",
+        "icon_5": "🔄",
+        "text_5": "7-Day easy returns",
+        "section_heading": "Goodness in Every Bite",
+        "section_desc": "Makhana is one of nature's most complete superfoods — and we source only the finest Grade A from Bihar's pristine ponds."
+      }
     },
     "featured-products": {
       "type": "featured-products",
@@ -114,11 +114,5 @@
       }
     }
   },
-  "order": [
-    "hero",
-    "benefits-bar",
-    "featured-products",
-    "blog-preview",
-    "youtube-preview"
-  ]
+  "order": ["hero", "benefits-bar", "featured-products", "blog-preview", "youtube-preview"]
 }
