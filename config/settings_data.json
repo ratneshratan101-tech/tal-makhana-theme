@@ -1,0 +1,15 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "color_primary": "#C4614A",
+      "color_secondary": "#C9A84C",
+      "color_background": "#FAF6EE",
+      "color_background_2": "#F2EAD8",
+      "color_text": "#2C1810",
+      "color_text_muted": "#8A7060",
+      "color_accent_green": "#4A6741",
+      "base_font_size": 16
+    }
+  }
+}
