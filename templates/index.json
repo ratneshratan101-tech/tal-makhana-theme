@@ -1,14 +1,5 @@
 {
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "settings": {
-        "show_announcement": true,
-        "text_1": "🚚 Free delivery on orders above ₹499",
-        "text_2": "🌾 Direct from Bihar farms",
-        "text_3": "✅ Grade A Makhana — No Preservatives"
-      }
-    },
     "hero": {
       "type": "hero",
       "settings": {
