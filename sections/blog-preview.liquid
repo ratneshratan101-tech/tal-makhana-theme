@@ -1,0 +1,156 @@
+{%- assign blog = blogs[section.settings.blog] -%}
+
+<section class="section" style="background: var(--cream-2); border-top: 1px solid var(--border);">
+  <div class="products__header">
+    <div>
+      {%- if section.settings.label != blank -%}
+        <div class="label-pill">{{ section.settings.label }}</div>
+      {%- endif -%}
+      <h2 class="section__title">
+        {{ section.settings.heading | default: 'From Our Kitchen' }}
+      </h2>
+      {%- if section.settings.description != blank -%}
+        <p class="section__desc">{{ section.settings.description }}</p>
+      {%- endif -%}
+    </div>
+    {%- if blog != blank -%}
+      <a href="{{ blog.url }}" class="products__view-all">All Articles →</a>
+    {%- else -%}
+      <a href="/blogs/news" class="products__view-all">All Articles →</a>
+    {%- endif -%}
+  </div>
+
+  <div class="blog-grid">
+    {%- if blog != blank -%}
+      {%- for article in blog.articles limit: section.settings.posts_to_show -%}
+        <a href="{{ article.url }}" class="blog-card">
+          <div class="blog-card__img"
+               style="background: linear-gradient(135deg, var(--cream-2), var(--cream-3));">
+            {%- if article.image -%}
+              {{ article.image | image_url: width: 400 | image_tag: alt: article.image.alt, loading: 'lazy' }}
+            {%- else -%}
+              <span>📝</span>
+            {%- endif -%}
+            {%- if article.tags.first -%}
+              <span class="blog-card__cat" style="background: var(--green-pale); color: var(--green);">
+                {{ article.tags.first }}
+              </span>
+            {%- endif -%}
+          </div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta">
+              <span>{{ article.published_at | date: "%b %d, %Y" }}</span>
+              <div class="meta-dot"></div>
+              <span>{{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min read</span>
+            </div>
+            <h3 class="blog-card__title">{{ article.title }}</h3>
+            {%- if article.excerpt_or_content != blank -%}
+              <p class="blog-card__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 120 }}</p>
+            {%- endif -%}
+            <div class="blog-card__footer">
+              <div class="blog-card__author">
+                <div class="author-avatar" style="background: var(--terra-pale); color: var(--terra);">
+                  {{ article.author | slice: 0 }}
+                </div>
+                <span class="author-name">{{ article.author }}</span>
+              </div>
+              <span class="blog-card__read-more">Read →</span>
+            </div>
+          </div>
+        </a>
+      {%- endfor -%}
+    {%- else -%}
+      <!-- Placeholder cards -->
+      <div class="blog-card">
+        <div class="blog-card__img" style="background: linear-gradient(135deg, #EAF0E6, #C4D8B8);">
+          <span>🍲</span>
+          <span class="blog-card__cat" style="background: var(--green-pale); color: var(--green);">Recipe</span>
+        </div>
+        <div class="blog-card__body">
+          <div class="blog-card__meta"><span>Jun 23</span><div class="meta-dot"></div><span>3 min read</span></div>
+          <h3 class="blog-card__title">Makhana Kheer — Creamy Indian Dessert in 15 Minutes</h3>
+          <p class="blog-card__excerpt">A lighter, guilt-free twist on the classic rice kheer — made entirely with fox nuts and natural sweeteners.</p>
+          <div class="blog-card__footer">
+            <div class="blog-card__author"><div class="author-avatar" style="background:var(--green-pale);color:var(--green);">P</div><span class="author-name">Priya R.</span></div>
+            <span class="blog-card__read-more">Read →</span>
+          </div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-card__img" style="background: linear-gradient(135deg, #FAEAE6, #F0C4B8);">
+          <span>💪</span>
+          <span class="blog-card__cat" style="background: var(--terra-pale); color: var(--terra);">Health</span>
+        </div>
+        <div class="blog-card__body">
+          <div class="blog-card__meta"><span>Jun 22</span><div class="meta-dot"></div><span>6 min read</span></div>
+          <h3 class="blog-card__title">Is Makhana Good for Diabetes? A Nutritionist Answers</h3>
+          <p class="blog-card__excerpt">Makhana has a low glycaemic index — but does that make it truly safe for diabetics?</p>
+          <div class="blog-card__footer">
+            <div class="blog-card__author"><div class="author-avatar" style="background:var(--terra-pale);color:var(--terra);">A</div><span class="author-name">Dr. Asha K.</span></div>
+            <span class="blog-card__read-more">Read →</span>
+          </div>
+        </div>
+      </div>
+      <div class="blog-card">
+        <div class="blog-card__img" style="background: linear-gradient(135deg, #FBF4E0, #EED898);">
+          <span>⚖️</span>
+          <span class="blog-card__cat" style="background: var(--gold-pale); color: var(--brown-mid);">Weight Loss</span>
+        </div>
+        <div class="blog-card__body">
+          <div class="blog-card__meta"><span>Jun 21</span><div class="meta-dot"></div><span>5 min read</span></div>
+          <h3 class="blog-card__title">I Ate Makhana Every Day for 30 Days — Here's What Happened</h3>
+          <p class="blog-card__excerpt">One of our team members replaced evening snacks with makhana for a month and tracked the results.</p>
+          <div class="blog-card__footer">
+            <div class="blog-card__author"><div class="author-avatar" style="background:var(--gold-pale);color:var(--brown-mid);">S</div><span class="author-name">Sneha M.</span></div>
+            <span class="blog-card__read-more">Read →</span>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog Preview",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Section Label",
+      "default": "From Our Kitchen"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Recipes, Tips & Stories"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Makhana recipes, health tips and farm stories — published fresh, every week."
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "posts_to_show",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Posts to show",
+      "default": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Preview"
+    }
+  ]
+}
+{% endschema %}

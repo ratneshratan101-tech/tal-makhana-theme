@@ -1,0 +1,211 @@
+<div class="cart-page">
+  <div class="breadcrumb" style="margin-bottom:28px;">
+    <a href="{{ routes.root_url }}">Home</a>
+    <span class="breadcrumb__sep">&rsaquo;</span>
+    <span class="breadcrumb__current">Cart</span>
+  </div>
+
+  {%- if cart.item_count == 0 -%}
+    <!-- Empty Cart -->
+    <div class="empty-state">
+      <div class="empty-state__emoji">🛒</div>
+      <h1 class="empty-state__title">Your cart is empty</h1>
+      <p class="empty-state__desc">Looks like you haven't added anything yet. Explore our flavours and find your favourite!</p>
+      <a href="/collections/all" class="btn btn--primary btn--lg">Browse Products →</a>
+    </div>
+
+  {%- else -%}
+    <h1 class="section__title" style="margin-bottom:8px;">My Cart</h1>
+    <p style="font-size:14px; color:var(--text-muted); margin-bottom:32px;">{{ cart.item_count }} item{{ cart.item_count | pluralize: '', 's' }} in your cart</p>
+
+    <div class="cart-grid">
+      <!-- Left: Items -->
+      <div>
+        <div class="items-panel">
+          <div class="items-header">
+            <h2>Order Items</h2>
+            <span class="items-header-sub">{{ cart.item_count }} product{{ cart.item_count | pluralize: '', 's' }} selected</span>
+          </div>
+
+          {%- for item in cart.items -%}
+            <div class="cart-item-row">
+              <div class="ci-img">
+                {%- if item.image -%}
+                  {{ item.image | image_url: width: 176 | image_tag: alt: item.title, loading: 'lazy' }}
+                {%- else -%}
+                  <span>🌰</span>
+                {%- endif -%}
+              </div>
+              <div class="ci-body">
+                <div class="ci-name">{{ item.product.title }}</div>
+                {%- unless item.product.has_only_default_variant -%}
+                  <div class="ci-variant">{{ item.variant.title }}</div>
+                {%- endunless -%}
+                <div class="ci-seller">Sold by: <strong>Tal Makhana Farms, Bihar</strong> &middot; FSSAI Certified</div>
+
+                <div class="ci-actions">
+                  <!-- Qty Control -->
+                  <div class="qty-ctrl">
+                    <button
+                      type="button"
+                      data-cart-action="decrease"
+                      data-key="{{ item.key }}"
+                      data-qty="{{ item.quantity }}"
+                      aria-label="Decrease quantity">
+                      &#8722;
+                    </button>
+                    <span>{{ item.quantity }}</span>
+                    <button
+                      type="button"
+                      data-cart-action="increase"
+                      data-key="{{ item.key }}"
+                      data-qty="{{ item.quantity }}"
+                      aria-label="Increase quantity">
+                      &#43;
+                    </button>
+                  </div>
+
+                  <!-- Price -->
+                  <div class="ci-price-col">
+                    <div class="ci-price">{{ item.final_line_price | money }}</div>
+                    {%- if item.variant.compare_at_price > item.variant.price -%}
+                      <div class="ci-mrp">{{ item.variant.compare_at_price | times: item.quantity | money }}</div>
+                      {%- assign savings = item.variant.compare_at_price | minus: item.variant.price -%}
+                      {%- assign savings_pct = savings | times: 100 | divided_by: item.variant.compare_at_price -%}
+                      <div class="ci-discount">{{ savings_pct }}% off</div>
+                    {%- endif -%}
+                  </div>
+                </div>
+
+                <div class="ci-links">
+                  <button type="button"
+                          class="ci-link-btn remove-btn"
+                          data-cart-action="remove"
+                          data-key="{{ item.key }}">
+                    🗑 Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <!-- Trust Strip -->
+        <div class="trust-strip">
+          <div class="trust-chip">🔒 Safe &amp; Secure Payment</div>
+          <div class="trust-chip">
+            🚚
+            {%- if cart.total_price >= 49900 -%}FREE Delivery{%- else -%}₹49 Delivery{%- endif -%}
+            · 2-4 days
+          </div>
+          <div class="trust-chip">🔄 7-Day Easy Returns</div>
+          <div class="trust-chip">🌿 100% Natural, FSSAI Certified</div>
+        </div>
+      </div>
+
+      <!-- Right: Price Panel -->
+      <div>
+        <div class="price-panel">
+          <div class="pp-header">Price Details</div>
+          <div class="pp-body">
+            {%- assign total_items = 0 -%}
+            {%- for item in cart.items -%}
+              {%- assign total_items = total_items | plus: item.quantity -%}
+            {%- endfor -%}
+
+            {%- assign cart_compare_total = 0 -%}
+            {%- for item in cart.items -%}
+              {%- if item.variant.compare_at_price > item.variant.price -%}
+                {%- assign item_compare = item.variant.compare_at_price | times: item.quantity -%}
+              {%- else -%}
+                {%- assign item_compare = item.final_line_price -%}
+              {%- endif -%}
+              {%- assign cart_compare_total = cart_compare_total | plus: item_compare -%}
+            {%- endfor -%}
+
+            {%- assign discount_total = cart_compare_total | minus: cart.total_price -%}
+
+            <div class="pp-row">
+              <span class="pp-row-label">Price ({{ total_items }} item{{ total_items | pluralize: '', 's' }})</span>
+              <span class="pp-row-value">{{ cart_compare_total | money }}</span>
+            </div>
+
+            {%- if discount_total > 0 -%}
+              <div class="pp-row">
+                <span class="pp-row-label">Discount</span>
+                <span class="pp-row-value discount">&minus; {{ discount_total | money }}</span>
+              </div>
+            {%- endif -%}
+
+            <div class="pp-row">
+              <span class="pp-row-label">Delivery Charges</span>
+              {%- if cart.total_price >= 49900 -%}
+                <span class="pp-row-value free">FREE ✓</span>
+              {%- else -%}
+                <span class="pp-row-value">₹49</span>
+              {%- endif -%}
+            </div>
+
+            <div class="pp-divider"></div>
+
+            <div class="pp-total-row">
+              <span class="pp-total-label">Total Amount</span>
+              <span class="pp-total-value">
+                {%- if cart.total_price >= 49900 -%}
+                  {{ cart.total_price | money }}
+                {%- else -%}
+                  {{ cart.total_price | plus: 4900 | money }}
+                {%- endif -%}
+              </span>
+            </div>
+
+            {%- if discount_total > 0 -%}
+              <div class="pp-savings-box">
+                🎉 You'll save {{ discount_total | money }} on this order!
+                <span>Compared to buying at local stores</span>
+              </div>
+            {%- endif -%}
+
+            <a href="{{ routes.checkout_url }}" class="btn btn--primary btn--block btn--lg" style="margin-bottom:10px;">
+              Place Order →
+            </a>
+            <a href="/collections/all" class="btn btn--outline btn--block" style="margin-bottom:14px;">
+              Continue Shopping
+            </a>
+
+            <div class="pp-secure">🔒 Safe and secure payments. Easy returns. 100% Authentic products.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- You Might Also Like -->
+    {%- assign cart_product_ids = '' -%}
+    {%- for item in cart.items -%}
+      {%- assign cart_product_ids = cart_product_ids | append: item.product.id | append: ',' -%}
+    {%- endfor -%}
+
+    <div class="also-like" style="margin-top:48px;">
+      <h2 class="section__title" style="margin-bottom:20px;">You Might Also <em>Like</em></h2>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:14px;">
+        {%- for product in collections.all.products limit: 4 -%}
+          {%- unless cart_product_ids contains product.id -%}
+            <a href="{{ product.url }}" style="background:var(--white); border-radius:14px; border:1px solid var(--border); overflow:hidden; text-decoration:none; color:inherit; display:block; transition:transform var(--transition), box-shadow var(--transition);">
+              <div style="height:110px; display:flex; align-items:center; justify-content:center; font-size:44px; background: linear-gradient(135deg, var(--cream-2), var(--cream-3));">
+                {%- if product.featured_image -%}
+                  {{ product.featured_image | image_url: width: 200 | image_tag: alt: product.title, loading: 'lazy', style: 'width:100%;height:100%;object-fit:cover;' }}
+                {%- else -%}
+                  🌰
+                {%- endif -%}
+              </div>
+              <div style="padding:10px 14px 14px;">
+                <div style="font-size:14px; font-weight:600; color:var(--brown-dark); margin-bottom:6px;">{{ product.title }}</div>
+                <div style="font-size:15px; font-weight:700; color:var(--terra); font-family:var(--font-heading);">From {{ product.price_min | money }}</div>
+              </div>
+            </a>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>

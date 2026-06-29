@@ -1,0 +1,172 @@
+<div class="hero">
+  <div class="hero__left">
+    {%- if section.settings.tag_text != blank -%}
+      <div class="hero__tag">{{ section.settings.tag_text }}</div>
+    {%- endif -%}
+
+    <h1 class="hero__title">
+      {{ section.settings.heading | newline_to_br }}
+    </h1>
+
+    {%- if section.settings.description != blank -%}
+      <p class="hero__desc">{{ section.settings.description }}</p>
+    {%- endif -%}
+
+    <div class="hero__actions">
+      <a href="{{ section.settings.cta_1_url | default: '/collections/all' }}" class="btn btn--primary btn--lg">
+        {{ section.settings.cta_1_text | default: 'Shop Now →' }}
+      </a>
+      <a href="{{ section.settings.cta_2_url | default: '#benefits' }}" class="btn btn--outline btn--lg">
+        {{ section.settings.cta_2_text | default: 'Learn More' }}
+      </a>
+    </div>
+
+    <div class="hero__pills">
+      {%- if section.settings.pill_1 != blank -%}
+        <div class="hero__pill">
+          <span class="hero__pill-dot" style="background: var(--green);"></span>
+          {{ section.settings.pill_1 }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.pill_2 != blank -%}
+        <div class="hero__pill">
+          <span class="hero__pill-dot" style="background: var(--gold);"></span>
+          {{ section.settings.pill_2 }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.pill_3 != blank -%}
+        <div class="hero__pill">
+          <span class="hero__pill-dot" style="background: var(--terra);"></span>
+          {{ section.settings.pill_3 }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="hero__right" aria-hidden="true">
+    <div class="hero__product-display">
+      <div class="hero__product-main">
+        <span class="hero__product-emoji">🌰</span>
+        <div class="hero__product-label">{{ section.settings.product_label | default: 'Tal Makhana' }}</div>
+        <div class="hero__product-sublabel">{{ section.settings.product_sublabel | default: 'Premium Fox Nuts' }}</div>
+      </div>
+      <div class="hero__float-card hero__float-card--left">
+        <div class="hero__float-label">Rating</div>
+        <div class="hero__float-value">⭐ 4.9/5</div>
+        <div class="hero__float-sub">12,000+ reviews</div>
+      </div>
+      <div class="hero__float-card hero__float-card--right">
+        <div class="hero__float-label">Ships from</div>
+        <div class="hero__float-value">Bihar Farms</div>
+        <div class="hero__float-sub">FSSAI Certified</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Trust Bar -->
+<div class="trust-bar">
+  <div class="trust-bar__item">
+    <span class="trust-bar__icon">🏆</span>
+    <span>Grade A Makhana</span>
+  </div>
+  <div class="trust-bar__item">
+    <span class="trust-bar__icon">🌿</span>
+    <span>No Preservatives</span>
+  </div>
+  <div class="trust-bar__item">
+    <span class="trust-bar__icon">🚚</span>
+    <span>Free delivery ₹499+</span>
+  </div>
+  <div class="trust-bar__item">
+    <span class="trust-bar__icon">🔄</span>
+    <span>7-Day Returns</span>
+  </div>
+  <div class="trust-bar__item">
+    <span class="trust-bar__icon">🔒</span>
+    <span>FSSAI Certified</span>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tag_text",
+      "label": "Tag Line (above heading)",
+      "default": "Hand-harvested from Bihar's Mithila wetlands"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "Bihar's Finest\nFox Nuts"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Hand-harvested makhana from Bihar's pristine ponds. Roasted to perfection with pure desi ghee. No preservatives, no compromise."
+    },
+    {
+      "type": "text",
+      "id": "cta_1_text",
+      "label": "Primary Button Text",
+      "default": "Shop Now →"
+    },
+    {
+      "type": "url",
+      "id": "cta_1_url",
+      "label": "Primary Button URL"
+    },
+    {
+      "type": "text",
+      "id": "cta_2_text",
+      "label": "Secondary Button Text",
+      "default": "See Benefits"
+    },
+    {
+      "type": "url",
+      "id": "cta_2_url",
+      "label": "Secondary Button URL"
+    },
+    {
+      "type": "text",
+      "id": "pill_1",
+      "label": "Trust Pill 1",
+      "default": "100% Natural"
+    },
+    {
+      "type": "text",
+      "id": "pill_2",
+      "label": "Trust Pill 2",
+      "default": "FSSAI Certified"
+    },
+    {
+      "type": "text",
+      "id": "pill_3",
+      "label": "Trust Pill 3",
+      "default": "Direct from Farms"
+    },
+    {
+      "type": "text",
+      "id": "product_label",
+      "label": "Product Display Label",
+      "default": "Tal Makhana"
+    },
+    {
+      "type": "text",
+      "id": "product_sublabel",
+      "label": "Product Display Sublabel",
+      "default": "Premium Fox Nuts"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}

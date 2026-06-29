@@ -1,0 +1,128 @@
+<!-- Blog Header -->
+<div class="blog-header">
+  <div class="blog-header__inner">
+    <div class="breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span class="breadcrumb__sep">&rsaquo;</span>
+      <span class="breadcrumb__current">{{ blog.title }}</span>
+    </div>
+    <h1 class="section__title">From Our <em>Kitchen</em></h1>
+    <p class="section__desc">Recipes, health tips, wellness guides, and stories straight from Bihar's makhana heartland. Published fresh, every single day.</p>
+    <div class="blog-stats">
+      <div class="blog-stat"><strong>{{ blog.articles_count }}</strong> Articles</div>
+      <div class="blog-stat"><strong>Daily</strong> Publishing</div>
+      <div class="blog-stat"><strong>8</strong> Categories</div>
+      <div class="blog-stat"><strong>Free</strong> to Read</div>
+    </div>
+  </div>
+</div>
+
+<!-- Featured Article -->
+{%- if blog.articles.first -%}
+  {%- assign featured = blog.articles.first -%}
+  <div class="featured-article">
+    <div class="featured-label">Featured Article</div>
+    <a href="{{ featured.url }}" class="featured-card">
+      <div class="featured-card__img" style="background: linear-gradient(135deg, #EAF0E6, #B8D4A0);">
+        {%- if featured.image -%}
+          {{ featured.image | image_url: width: 600 | image_tag: alt: featured.image.alt, loading: 'eager' }}
+        {%- else -%}
+          <span style="font-size:96px;">🥗</span>
+        {%- endif -%}
+        {%- if featured.tags.first -%}
+          <span class="featured-card__img-cat">{{ featured.tags.first }}</span>
+        {%- endif -%}
+      </div>
+      <div class="featured-card__body">
+        <div class="featured-card__meta">
+          <span>{{ featured.published_at | date: "%B %d, %Y" }}</span>
+          <div class="meta-dot"></div>
+          <span>{{ featured.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min read</span>
+        </div>
+        <div class="featured-card__title">{{ featured.title }}</div>
+        <p class="featured-card__excerpt">{{ featured.excerpt_or_content | strip_html | truncate: 200 }}</p>
+        <span class="btn btn--primary" style="width:fit-content;">Read Full Article →</span>
+      </div>
+    </a>
+  </div>
+{%- endif -%}
+
+<!-- Blog Grid -->
+<div class="blog-listing">
+  {%- paginate blog.articles by 9 -%}
+    <div class="blog-grid">
+      {%- for article in blog.articles offset: 1 -%}
+        <a href="{{ article.url }}" class="blog-card">
+          <div class="blog-card__img" style="background: linear-gradient(135deg, var(--cream-2), var(--cream-3));">
+            {%- if article.image -%}
+              {{ article.image | image_url: width: 400 | image_tag: alt: article.image.alt, loading: 'lazy' }}
+            {%- else -%}
+              <span style="font-size:64px;">📝</span>
+            {%- endif -%}
+            {%- if article.tags.first -%}
+              <span class="blog-card__cat" style="background: var(--green-pale); color: var(--green);">
+                {{ article.tags.first }}
+              </span>
+            {%- endif -%}
+          </div>
+          <div class="blog-card__body">
+            <div class="blog-card__meta">
+              <span>{{ article.published_at | date: "%b %d" }}</span>
+              <div class="meta-dot"></div>
+              <span>{{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min read</span>
+            </div>
+            <h2 class="blog-card__title">{{ article.title }}</h2>
+            {%- if article.excerpt_or_content != blank -%}
+              <p class="blog-card__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 110 }}</p>
+            {%- endif -%}
+            <div class="blog-card__footer">
+              <div class="blog-card__author">
+                <div class="author-avatar" style="background: var(--terra-pale); color: var(--terra);">
+                  {{ article.author | slice: 0 }}
+                </div>
+                <span class="author-name">{{ article.author }}</span>
+              </div>
+              <span class="blog-card__read-more">Read →</span>
+            </div>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+
+    <!-- Pagination -->
+    {%- if paginate.pages > 1 -%}
+      <div class="load-more-wrap">
+        {%- if paginate.next -%}
+          <a href="{{ paginate.next.url }}" class="load-more-btn">Load More Articles</a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+<!-- Newsletter -->
+<div class="newsletter">
+  <div class="newsletter__inner">
+    <div>
+      <h2 class="newsletter__title">Get New Articles<br>in Your <em>Inbox</em></h2>
+      <p class="newsletter__desc">New recipe or health article every day. Subscribe free and never miss a post.</p>
+      <div style="display:flex; flex-direction:column; gap:8px; margin-top:16px;">
+        <div style="font-size:13px; color:var(--text-mid);">✅ Daily recipe or health tip</div>
+        <div style="font-size:13px; color:var(--text-mid);">✅ YouTube video alerts</div>
+        <div style="font-size:13px; color:var(--text-mid);">✅ Exclusive subscriber discounts</div>
+        <div style="font-size:13px; color:var(--text-mid);">✅ No spam, unsubscribe anytime</div>
+      </div>
+    </div>
+    <div>
+      {%- form 'customer' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="newsletter__form">
+          <input class="newsletter__input" type="text" name="contact[first_name]" placeholder="Your name">
+          <input class="newsletter__input" type="email" name="contact[email]" placeholder="Your email address" required>
+          <button type="submit" class="btn btn--primary btn--block">Subscribe — It's Free</button>
+          <div class="newsletter__note">Join 14,000+ makhana enthusiasts already subscribed</div>
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</div>

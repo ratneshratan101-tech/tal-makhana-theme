@@ -1,0 +1,129 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="site-footer__top">
+    <!-- Brand Column -->
+    <div class="site-footer__brand">
+      <div class="site-footer__brand-logo">
+        <div class="site-footer__brand-circle" aria-hidden="true">
+          <span style="font-size:15px;">🌿</span>
+        </div>
+        <span class="site-footer__brand-name">{{ section.settings.brand_name | default: shop.name }}</span>
+      </div>
+      <p class="site-footer__tagline">{{ section.settings.tagline | default: "Hand-harvested fox nuts from Bihar's pristine ponds. Premium quality, no preservatives, direct from farm to your family." }}</p>
+      <div class="site-footer__social">
+        {%- if section.settings.instagram_url != blank -%}
+          <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener" class="site-footer__social-btn" aria-label="Instagram">📸</a>
+        {%- endif -%}
+        {%- if section.settings.facebook_url != blank -%}
+          <a href="{{ section.settings.facebook_url }}" target="_blank" rel="noopener" class="site-footer__social-btn" aria-label="Facebook">📘</a>
+        {%- endif -%}
+        {%- if section.settings.youtube_url != blank -%}
+          <a href="{{ section.settings.youtube_url }}" target="_blank" rel="noopener" class="site-footer__social-btn" aria-label="YouTube">▶</a>
+        {%- endif -%}
+        {%- if section.settings.whatsapp_url != blank -%}
+          <a href="{{ section.settings.whatsapp_url }}" target="_blank" rel="noopener" class="site-footer__social-btn" aria-label="WhatsApp">💬</a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- Shop Links -->
+    <div>
+      <div class="site-footer__col-title">Shop</div>
+      <ul class="site-footer__links">
+        <li><a href="/collections/all">All Products</a></li>
+        <li><a href="/collections/all?filter=plain-roasted">Plain Roasted</a></li>
+        <li><a href="/collections/all?filter=flavoured">Flavoured Range</a></li>
+        <li><a href="/collections/all?filter=gift">Gift Packs</a></li>
+        <li><a href="/collections/all?filter=family">Family Packs</a></li>
+      </ul>
+    </div>
+
+    <!-- Info Links -->
+    <div>
+      <div class="site-footer__col-title">Learn</div>
+      <ul class="site-footer__links">
+        <li><a href="/blogs/recipes">Recipes</a></li>
+        <li><a href="/blogs/news">Blog</a></li>
+        <li><a href="/pages/about">About Us</a></li>
+        <li><a href="/pages/where-to-buy">Where to Buy</a></li>
+        <li><a href="/pages/wholesale">Wholesale / Export</a></li>
+      </ul>
+    </div>
+
+    <!-- Support Links -->
+    <div>
+      <div class="site-footer__col-title">Support</div>
+      <ul class="site-footer__links">
+        <li><a href="/pages/contact">Contact Us</a></li>
+        <li><a href="/pages/faq">FAQ</a></li>
+        <li><a href="/pages/shipping">Shipping Policy</a></li>
+        <li><a href="/pages/returns">Returns Policy</a></li>
+        <li><a href="/account">My Account</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Footer Bottom -->
+  <div class="site-footer__bottom">
+    <div class="site-footer__copy">
+      &copy; {{ 'now' | date: "%Y" }} {{ section.settings.brand_name | default: shop.name }}
+      &middot; {{ section.settings.fssai | default: 'FSSAI Lic. No. XXXXXXXXXXXXXX' }}
+      &middot; Made with ❤️ in Bihar
+    </div>
+    <ul class="site-footer__legal">
+      <li><a href="/policies/privacy-policy">Privacy</a></li>
+      <li><a href="/policies/terms-of-service">Terms</a></li>
+      <li><a href="/policies/refund-policy">Returns</a></li>
+    </ul>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "Tal Makhana"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Brand Tagline",
+      "default": "Hand-harvested fox nuts from Bihar's pristine ponds. Premium quality, no preservatives, direct from farm to your family."
+    },
+    {
+      "type": "text",
+      "id": "fssai",
+      "label": "FSSAI License Number",
+      "default": "FSSAI Lic. No. XXXXXXXXXXXXXX"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "whatsapp_url",
+      "label": "WhatsApp URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer"
+    }
+  ]
+}
+{% endschema %}

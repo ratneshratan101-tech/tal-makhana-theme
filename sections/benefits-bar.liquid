@@ -1,0 +1,229 @@
+<div class="benefits-bar" id="benefits">
+  {%- for i in (1..5) -%}
+    {%- assign icon_key = 'icon_' | append: i -%}
+    {%- assign text_key = 'text_' | append: i -%}
+    {%- if section.settings[text_key] != blank -%}
+      {%- if i > 1 -%}<div class="benefits-bar__sep" aria-hidden="true"></div>{%- endif -%}
+      <div class="benefits-bar__item">
+        {%- if section.settings[icon_key] != blank -%}
+          <span class="benefits-bar__icon" aria-hidden="true">{{ section.settings[icon_key] }}</span>
+        {%- endif -%}
+        <span>{{ section.settings[text_key] }}</span>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+</div>
+
+<section class="benefits section" id="benefits-section">
+  <div class="section-header text-center">
+    <div class="label-pill--green label-pill">Why Tal Makhana?</div>
+    <h2 class="section__title">
+      {{ section.settings.section_heading | default: 'Goodness in Every Bite' }}
+    </h2>
+    <p class="section__desc" style="margin: 12px auto 0;">
+      {{ section.settings.section_desc | default: 'Makhana is one of nature\'s most complete superfoods — and we source only the finest Grade A from Bihar\'s pristine ponds.' }}
+    </p>
+  </div>
+
+  <div class="benefits__grid">
+    {%- for block in section.blocks -%}
+      <div class="benefit-card" {{ block.shopify_attributes }}>
+        <span class="benefit-card__icon" aria-hidden="true">{{ block.settings.icon }}</span>
+        <div class="benefit-card__title">{{ block.settings.title }}</div>
+        <p class="benefit-card__desc">{{ block.settings.description }}</p>
+      </div>
+    {%- else -%}
+      <div class="benefit-card">
+        <span class="benefit-card__icon">💪</span>
+        <div class="benefit-card__title">High in Protein</div>
+        <p class="benefit-card__desc">9.7g of protein per 100g — more than most nuts. Perfect for post-workout snacking.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-card__icon">📉</span>
+        <div class="benefit-card__title">Low Glycaemic Index</div>
+        <p class="benefit-card__desc">Safe for diabetics and weight-watchers. Makhana won't spike your blood sugar.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-card__icon">🌿</span>
+        <div class="benefit-card__title">Zero Preservatives</div>
+        <p class="benefit-card__desc">No artificial colours, flavours, or preservatives. Just pure, natural makhana.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-card__icon">🔥</span>
+        <div class="benefit-card__title">Only 347 Calories</div>
+        <p class="benefit-card__desc">A large bowl of makhana has fewer calories than a small bag of chips. Guilt-free snacking.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-card__icon">🌾</span>
+        <div class="benefit-card__title">Gluten-Free</div>
+        <p class="benefit-card__desc">Naturally gluten-free and suitable for celiac diets. Safe for the whole family.</p>
+      </div>
+      <div class="benefit-card">
+        <span class="benefit-card__icon">🧘</span>
+        <div class="benefit-card__title">Ayurvedic Superfood</div>
+        <p class="benefit-card__desc">Mentioned in ancient Ayurvedic texts as a sattvic food that promotes calm and longevity.</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Benefits Bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "icon_1",
+      "label": "Icon 1",
+      "default": "🚚"
+    },
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Benefit 1",
+      "default": "Free delivery above ₹499"
+    },
+    {
+      "type": "text",
+      "id": "icon_2",
+      "label": "Icon 2",
+      "default": "🌿"
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Benefit 2",
+      "default": "No preservatives added"
+    },
+    {
+      "type": "text",
+      "id": "icon_3",
+      "label": "Icon 3",
+      "default": "🔬"
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Benefit 3",
+      "default": "Lab tested every batch"
+    },
+    {
+      "type": "text",
+      "id": "icon_4",
+      "label": "Icon 4",
+      "default": "📋"
+    },
+    {
+      "type": "text",
+      "id": "text_4",
+      "label": "Benefit 4",
+      "default": "FSSAI Certified"
+    },
+    {
+      "type": "text",
+      "id": "icon_5",
+      "label": "Icon 5",
+      "default": "🔄"
+    },
+    {
+      "type": "text",
+      "id": "text_5",
+      "label": "Benefit 5",
+      "default": "7-Day easy returns"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section Heading",
+      "default": "Goodness in Every Bite"
+    },
+    {
+      "type": "textarea",
+      "id": "section_desc",
+      "label": "Section Description",
+      "default": "Makhana is one of nature's most complete superfoods — and we source only the finest Grade A from Bihar's pristine ponds."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon (emoji)",
+          "default": "💪"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "High in Protein"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "9.7g of protein per 100g — more than most nuts."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefits Bar",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "💪",
+            "title": "High in Protein",
+            "description": "9.7g of protein per 100g — more than most nuts. Perfect for post-workout snacking."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "📉",
+            "title": "Low Glycaemic Index",
+            "description": "Safe for diabetics and weight-watchers. Makhana won't spike your blood sugar."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "🌿",
+            "title": "Zero Preservatives",
+            "description": "No artificial colours, flavours, or preservatives."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "🔥",
+            "title": "Only 347 Calories",
+            "description": "A large bowl has fewer calories than a small bag of chips."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "🌾",
+            "title": "Gluten-Free",
+            "description": "Naturally gluten-free and suitable for celiac diets."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "🧘",
+            "title": "Ayurvedic Superfood",
+            "description": "Mentioned in ancient Ayurvedic texts as a sattvic food."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

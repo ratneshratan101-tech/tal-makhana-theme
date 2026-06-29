@@ -1,0 +1,90 @@
+<!-- Article Header -->
+<div class="article-header">
+  <div class="article-header__inner">
+    <div class="breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span class="breadcrumb__sep">&rsaquo;</span>
+      <a href="{{ blog.url }}">{{ blog.title }}</a>
+      <span class="breadcrumb__sep">&rsaquo;</span>
+      <span class="breadcrumb__current">{{ article.title | truncate: 40 }}</span>
+    </div>
+
+    {%- if article.tags.first -%}
+      <span class="article-header__cat">{{ article.tags.first }}</span>
+    {%- endif -%}
+
+    <h1 class="article-header__title">{{ article.title }}</h1>
+
+    <div class="article-header__meta">
+      <span>By {{ article.author }}</span>
+      <div class="meta-dot"></div>
+      <span>{{ article.published_at | date: "%B %d, %Y" }}</span>
+      <div class="meta-dot"></div>
+      <span>{{ article.content | strip_html | split: ' ' | size | divided_by: 200 | plus: 1 }} min read</span>
+    </div>
+  </div>
+</div>
+
+{%- if article.image -%}
+  <div style="max-width: 900px; margin: 0 auto; padding: 0 5%;">
+    {{ article.image | image_url: width: 900 | image_tag:
+       alt: article.image.alt,
+       loading: 'eager',
+       style: 'width:100%; border-radius:20px; margin-top:48px;' }}
+  </div>
+{%- endif -%}
+
+<!-- Article Body -->
+<div class="article-body">
+  <div class="article-body__content">
+    {{ article.content }}
+  </div>
+
+  <!-- Tags -->
+  {%- if article.tags.size > 0 -%}
+    <div style="margin-top:40px; padding-top:24px; border-top:1px solid var(--border);">
+      <div style="font-size:12px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:12px;">Tags</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        {%- for tag in article.tags -%}
+          <span style="font-size:12px; font-weight:500; padding:4px 14px; border-radius:100px; background:var(--cream-2); color:var(--text-mid); border:1px solid var(--border);">{{ tag }}</span>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- Author -->
+  <div style="margin-top:40px; background:var(--cream-2); border-radius:var(--border-radius); padding:28px 24px; border:1px solid var(--border); display:flex; gap:20px; align-items:flex-start;">
+    <div style="width:56px; height:56px; border-radius:50%; background:var(--terra-pale); color:var(--terra); display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700; flex-shrink:0;">
+      {{ article.author | slice: 0 }}
+    </div>
+    <div>
+      <div style="font-size:16px; font-weight:600; color:var(--brown-dark); margin-bottom:4px;">{{ article.author }}</div>
+      <div style="font-size:13px; color:var(--text-muted); font-weight:300; line-height:1.7;">Content writer at Tal Makhana. Passionate about makhana recipes, Bihar food culture, and healthy living.</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="margin-top:40px; background:var(--terra); border-radius:var(--border-radius); padding:40px 32px; text-align:center; color:white;">
+    <h3 style="font-family:var(--font-heading); font-size:24px; font-weight:700; margin-bottom:10px;">Ready to Try Tal Makhana?</h3>
+    <p style="font-size:14px; opacity:0.8; margin-bottom:24px; font-weight:300;">Shop Bihar's finest fox nuts — hand-harvested, no preservatives, direct to your door.</p>
+    <a href="/collections/all" class="btn btn--outline" style="border-color:rgba(255,255,255,0.5); color:white;">Shop Now →</a>
+  </div>
+</div>
+
+<!-- Next/Prev Articles -->
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; padding:0 5% 72px; max-width:1200px; margin:0 auto;">
+  {%- if blog.previous_article -%}
+    <a href="{{ blog.previous_article.url }}" style="background:var(--white); border:1px solid var(--border); border-radius:var(--border-radius-sm); padding:20px; text-decoration:none; color:inherit; display:block; transition:box-shadow var(--transition);">
+      <div style="font-size:11px; color:var(--text-muted); margin-bottom:8px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;">← Previous Article</div>
+      <div style="font-size:15px; font-weight:600; color:var(--brown-dark);">{{ blog.previous_article.title }}</div>
+    </a>
+  {%- else -%}
+    <div></div>
+  {%- endif -%}
+  {%- if blog.next_article -%}
+    <a href="{{ blog.next_article.url }}" style="background:var(--white); border:1px solid var(--border); border-radius:var(--border-radius-sm); padding:20px; text-decoration:none; color:inherit; display:block; text-align:right; transition:box-shadow var(--transition);">
+      <div style="font-size:11px; color:var(--text-muted); margin-bottom:8px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase;">Next Article →</div>
+      <div style="font-size:15px; font-weight:600; color:var(--brown-dark);">{{ blog.next_article.title }}</div>
+    </a>
+  {%- endif -%}
+</div>

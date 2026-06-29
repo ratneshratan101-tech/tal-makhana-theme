@@ -1,43 +1,84 @@
 {
   "general": {
-    "search": {"placeholder": "Search products...","no_results": "No results for \"{{ terms }}\""},
-    "pagination": {"previous": "← Previous","next": "Next →","page": "Page {{ number }}"},
-    "newsletter": {"label": "Subscribe to our newsletter"}
+    "search": {
+      "placeholder": "Search products...",
+      "no_results": "No results for \"{{ terms }}\""
+    },
+    "pagination": {
+      "previous": "← Previous",
+      "next": "Next →",
+      "page": "Page {{ number }}"
+    },
+    "newsletter": {
+      "label": "Subscribe to our newsletter"
+    }
   },
   "cart": {
     "general": {
-      "title": "Your Cart","empty": "Your cart is empty","continue": "Continue Shopping",
-      "checkout": "Proceed to Checkout","subtotal": "Subtotal","total": "Total Amount",
-      "item_count": {"one": "{{ count }} item","other": "{{ count }} items"},
-      "close": "Close cart","open": "Open cart",
+      "title": "Your Cart",
+      "empty": "Your cart is empty",
+      "continue": "Continue Shopping",
+      "checkout": "Proceed to Checkout",
+      "subtotal": "Subtotal",
+      "total": "Total Amount",
+      "item_count": {
+        "one": "{{ count }} item",
+        "other": "{{ count }} items"
+      },
+      "close": "Close cart",
+      "open": "Open cart",
       "free_delivery": "You qualify for FREE delivery!",
       "add_for_free_delivery": "Add {{ amount }} more for FREE delivery"
     },
-    "items": {"remove": "Remove","quantity": "Quantity","variant": "Variant","price": "Price"}
+    "items": {
+      "remove": "Remove",
+      "quantity": "Quantity",
+      "variant": "Variant",
+      "price": "Price"
+    }
   },
   "products": {
     "general": {
-      "add_to_cart": "Add to Cart","buy_now": "Buy Now","out_of_stock": "Out of Stock",
-      "sold_out": "Sold Out","from": "From","view_all": "View All →","save": "Save",
-      "bestseller": "Bestseller","new": "New","in_stock": "In Stock"
+      "add_to_cart": "Add to Cart",
+      "buy_now": "Buy Now",
+      "out_of_stock": "Out of Stock",
+      "sold_out": "Sold Out",
+      "from": "From",
+      "view_all": "View All →",
+      "save": "Save",
+      "bestseller": "Bestseller",
+      "new": "New",
+      "in_stock": "In Stock"
     },
     "product": {
-      "quantity": "Quantity","weight": "Select Weight","size_guide": "Size guide",
-      "share": "Share","reviews": "Reviews","description": "Description",
-      "nutrition": "Nutrition Facts","ingredients": "Ingredients",
-      "only_left": "Only {{ count }} left in stock","wishlist": "Save to Wishlist"
+      "quantity": "Quantity",
+      "weight": "Select Weight",
+      "size_guide": "Size guide",
+      "share": "Share",
+      "reviews": "Reviews",
+      "description": "Description",
+      "nutrition": "Nutrition Facts",
+      "ingredients": "Ingredients",
+      "only_left": "Only {{ count }} left in stock",
+      "wishlist": "Save to Wishlist"
     }
   },
   "blog": {
     "general": {
-      "read_more": "Read →","all_articles": "All Articles →",
-      "min_read": "{{ count }} min read","published_by": "By {{ author }}",
+      "read_more": "Read →",
+      "all_articles": "All Articles →",
+      "min_read": "{{ count }} min read",
+      "published_by": "By {{ author }}",
       "load_more": "Load More Articles"
     }
   },
   "navigation": {
-    "shop": "Shop","benefits": "Benefits","recipes": "Recipes",
-    "blog": "Blog","where_to_buy": "Where to Buy","shop_now": "Shop Now"
+    "shop": "Shop",
+    "benefits": "Benefits",
+    "recipes": "Recipes",
+    "blog": "Blog",
+    "where_to_buy": "Where to Buy",
+    "shop_now": "Shop Now"
   },
   "footer": {
     "general": {
@@ -45,19 +86,27 @@
       "fssai": "FSSAI Certified"
     },
     "links": {
-      "shop": "Shop","blog": "Blog","about": "About Us","contact": "Contact",
-      "privacy": "Privacy Policy","terms": "Terms of Service",
-      "returns": "Returns Policy","shipping": "Shipping Policy",
-      "wholesale": "Wholesale","faq": "FAQ"
+      "shop": "Shop",
+      "blog": "Blog",
+      "about": "About Us",
+      "contact": "Contact",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "returns": "Returns Policy",
+      "shipping": "Shipping Policy",
+      "wholesale": "Wholesale",
+      "faq": "FAQ"
     }
   },
   "not_found": {
     "title": "Page Not Found",
     "message": "Looks like this page has been harvested. Let's get you back to the good stuff.",
-    "go_home": "Go Home","shop": "Shop Makhana"
+    "go_home": "Go Home",
+    "shop": "Shop Makhana"
   },
   "newsletter": {
-    "placeholder_name": "Your name","placeholder_email": "Your email address",
+    "placeholder_name": "Your name",
+    "placeholder_email": "Your email address",
     "subscribe": "Subscribe — It's Free",
     "note": "Join 14,000+ makhana enthusiasts already subscribed"
   }

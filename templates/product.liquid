@@ -1,0 +1,392 @@
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+
+<!-- Breadcrumb -->
+<div class="breadcrumb-bar">
+  <div class="breadcrumb">
+    <a href="{{ routes.root_url }}">Home</a>
+    <span class="breadcrumb__sep">&rsaquo;</span>
+    {%- if collection -%}
+      <a href="{{ collection.url }}">{{ collection.title }}</a>
+      <span class="breadcrumb__sep">&rsaquo;</span>
+    {%- else -%}
+      <a href="/collections/all">Shop</a>
+      <span class="breadcrumb__sep">&rsaquo;</span>
+    {%- endif -%}
+    <span class="breadcrumb__current">{{ product.title }}</span>
+  </div>
+</div>
+
+<!-- Product Hero -->
+<div class="product-hero">
+
+  <!-- Gallery -->
+  <div class="gallery">
+    <div class="gallery__main js-gallery-main">
+      <div class="gallery__main-bg" aria-hidden="true"></div>
+      <span class="gallery__badge">FSSAI Certified</span>
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 600 }}"
+             alt="{{ product.featured_image.alt | default: product.title }}"
+             loading="eager"
+             id="gallery-main-img">
+      {%- else -%}
+        <span class="js-gallery-main-emoji" style="position:relative;z-index:2;font-size:120px;">🌰</span>
+      {%- endif -%}
+    </div>
+    <div class="gallery__thumbs">
+      {%- for image in product.images limit: 4 -%}
+        <div class="gallery__thumb js-gallery-thumb {% if forloop.first %}active{% endif %}"
+             data-src="{{ image | image_url: width: 600 }}"
+             data-emoji="">
+          <img src="{{ image | image_url: width: 200 }}" alt="{{ image.alt | default: product.title }}" loading="lazy">
+        </div>
+      {%- else -%}
+        <div class="gallery__thumb js-gallery-thumb active" data-emoji="🌰" data-src="">🌰</div>
+        <div class="gallery__thumb js-gallery-thumb" data-emoji="🌾" data-src="">🌾</div>
+        <div class="gallery__thumb js-gallery-thumb" data-emoji="🪔" data-src="">🪔</div>
+        <div class="gallery__thumb js-gallery-thumb" data-emoji="📦" data-src="">📦</div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <!-- Product Info -->
+  <div class="product-info">
+    <span class="product-cat-tag">
+      {%- if product.type != blank -%}{{ product.type }}{%- else -%}Premium Makhana{%- endif -%}
+    </span>
+
+    <h1 class="product-name">{{ product.title }}</h1>
+
+    <div class="product-rating">
+      <span class="stars">⭐⭐⭐⭐⭐</span>
+      <span class="rating-num">4.9</span>
+      <span class="review-count" onclick="document.querySelector('[data-tab-panel=reviews]').scrollIntoView({behavior:'smooth'})">(486 reviews)</span>
+    </div>
+
+    {%- if product.description != blank -%}
+      <p class="product-short-desc">{{ product.description | strip_html | truncate: 220 }}</p>
+    {%- endif -%}
+
+    <!-- Price -->
+    <div class="price-display">
+      <div class="price-main js-product-price">
+        {{ current_variant.price | money }}
+      </div>
+      {%- if current_variant.compare_at_price > current_variant.price -%}
+        <div class="price-per">
+          <span class="js-compare-price" style="text-decoration:line-through; color: var(--text-muted); font-size:16px;">
+            {{ current_variant.compare_at_price | money }}
+          </span>
+        </div>
+        {%- assign savings = current_variant.compare_at_price | minus: current_variant.price -%}
+        {%- assign savings_pct = savings | times: 100 | divided_by: current_variant.compare_at_price -%}
+        <span class="price-saving">Save {{ savings_pct }}%</span>
+      {%- endif -%}
+    </div>
+
+    <!-- Add to Cart Form -->
+    <form action="/cart/add" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="id" value="{{ current_variant.id }}" id="variant-id-input">
+
+      <!-- Variants -->
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in product.options_with_values -%}
+          <div class="variant-selector js-variant-group" data-option-index="{{ forloop.index }}">
+            <div class="variant-label">{{ option.name }}</div>
+            <div class="variant-options">
+              {%- for value in option.values -%}
+                {%- assign variant_for_value = product.variants | where: "option{{ forloop.index }}", value | first -%}
+                <button type="button"
+                        class="variant-btn js-variant-btn {% if option.selected_value == value %}active{% endif %}"
+                        data-option-position="{{ forloop.index }}"
+                        data-option-value="{{ value }}"
+                        {% unless variant_for_value.available %}disabled{% endunless %}>
+                  {{ value }}
+                </button>
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endunless -%}
+
+      <!-- Quantity -->
+      <div class="qty-label">Quantity</div>
+      <div class="qty-row">
+        <div class="qty-control js-qty-control">
+          <button type="button" class="qty-btn-pg js-qty-decrease" aria-label="Decrease quantity">&#8722;</button>
+          <span class="qty-num-pg js-qty-num" id="qtyNum">1</span>
+          <button type="button" class="qty-btn-pg js-qty-increase" aria-label="Increase quantity">&#43;</button>
+          <input type="hidden" name="quantity" value="1">
+        </div>
+        {%- if current_variant.inventory_management == 'shopify' and current_variant.inventory_quantity > 0 and current_variant.inventory_quantity <= 20 -%}
+          <span class="qty-note">Only {{ current_variant.inventory_quantity }} left in stock</span>
+        {%- endif -%}
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="cta-buttons">
+        <button type="submit"
+                class="btn-add-cart"
+                {% unless current_variant.available %}disabled{% endunless %}>
+          {%- if current_variant.available -%}
+            🛒 Add to Cart — <span class="js-cart-btn-price">{{ current_variant.price | money }}</span>
+          {%- else -%}
+            Out of Stock
+          {%- endif -%}
+        </button>
+        <a href="/checkout?variant={{ current_variant.id }}&quantity=1" class="btn-buy-now">
+          ⚡ Buy Now
+        </a>
+        <button type="button" class="btn-wishlist">&#9825; Save to Wishlist</button>
+      </div>
+    </form>
+
+    <!-- Trust Badges -->
+    <div class="trust-badges">
+      <div class="trust-badge"><span class="trust-badge-icon">🚚</span>Free delivery above ₹499</div>
+      <div class="trust-badge"><span class="trust-badge-icon">🔄</span>7-day easy returns</div>
+      <div class="trust-badge"><span class="trust-badge-icon">🔬</span>Lab tested every batch</div>
+      <div class="trust-badge"><span class="trust-badge-icon">🌿</span>No preservatives added</div>
+      <div class="trust-badge"><span class="trust-badge-icon">📋</span>FSSAI certified</div>
+      <div class="trust-badge"><span class="trust-badge-icon">🌾</span>Direct from Bihar farms</div>
+    </div>
+
+    <!-- Share -->
+    <div class="share-row" style="display:flex; align-items:center; gap:10px; font-size:12px; color:var(--text-muted); padding-top:16px; border-top:1px solid var(--border);">
+      <span>Share:</span>
+      <a href="https://wa.me/?text={{ product.title | url_encode }}%20{{ request.origin }}{{ product.url }}" target="_blank" rel="noopener" class="btn btn--outline btn--sm">📱 WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<!-- Product Details Tabs -->
+<div class="product-details js-tabs-container">
+  <div class="tabs-nav">
+    <button class="tab-nav-btn js-tab-btn active" data-tab="description">Description</button>
+    <button class="tab-nav-btn js-tab-btn" data-tab="nutrition">Nutrition Facts</button>
+    <button class="tab-nav-btn js-tab-btn" data-tab="ingredients">Ingredients</button>
+    <button class="tab-nav-btn js-tab-btn" data-tab="reviews">Reviews (486)</button>
+  </div>
+
+  <!-- Description Tab -->
+  <div class="tab-panel active js-tab-panel" data-tab-panel="description">
+    <div class="desc-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start;">
+      <div class="desc-body">
+        <h3 style="font-family:var(--font-heading); font-size:24px; font-weight:700; color:var(--brown-dark); margin-bottom:14px;">About This Product</h3>
+        <div style="font-size:14px; color:var(--text-muted); line-height:1.8; font-weight:300;">
+          {{ product.description }}
+        </div>
+      </div>
+      <div class="desc-highlights" style="display:flex; flex-direction:column; gap:12px;">
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <span style="font-size:20px; flex-shrink:0; margin-top:2px;">🌊</span>
+          <div>
+            <strong style="display:block; font-size:14px; font-weight:600; color:var(--brown-dark); margin-bottom:2px;">Single-Origin from Mithila, Bihar</strong>
+            <span style="font-size:13px; color:var(--text-muted); font-weight:300;">Traceable to specific partner farms — not blended from multiple sources.</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <span style="font-size:20px; flex-shrink:0; margin-top:2px;">🥄</span>
+          <div>
+            <strong style="display:block; font-size:14px; font-weight:600; color:var(--brown-dark); margin-bottom:2px;">Roasted in Pure Desi Ghee</strong>
+            <span style="font-size:13px; color:var(--text-muted); font-weight:300;">No refined oils. Just a touch of pure cow ghee for flavour and crunch.</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <span style="font-size:20px; flex-shrink:0; margin-top:2px;">🎯</span>
+          <div>
+            <strong style="display:block; font-size:14px; font-weight:600; color:var(--brown-dark); margin-bottom:2px;">Grade A Sutta Size</strong>
+            <span style="font-size:13px; color:var(--text-muted); font-weight:300;">Large, round, uniform kernels — the highest grade, best crunch-to-puff ratio.</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <span style="font-size:20px; flex-shrink:0; margin-top:2px;">♻️</span>
+          <div>
+            <strong style="display:block; font-size:14px; font-weight:600; color:var(--brown-dark); margin-bottom:2px;">Resealable Vacuum Pouch</strong>
+            <span style="font-size:13px; color:var(--text-muted); font-weight:300;">Stays fresh for 6 months unopened. Reseal after opening to keep the crunch.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nutrition Tab -->
+  <div class="tab-panel js-tab-panel" data-tab-panel="nutrition">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:start;">
+      <div>
+        <h3 style="font-family:var(--font-heading); font-size:20px; font-weight:700; color:var(--brown-dark); margin-bottom:6px;">Nutrition Facts</h3>
+        <div style="font-size:12px; color:var(--text-muted); margin-bottom:20px; font-weight:300;">Per 100g serving · Values are approximate</div>
+        <table class="nutrition-table">
+          <thead>
+            <tr>
+              <th>Nutrient</th>
+              <th>Per 100g</th>
+              <th>% Daily Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Energy</td><td>347 kcal</td><td>17%</td></tr>
+            <tr><td>Protein</td><td>9.7g</td><td>19%</td></tr>
+            <tr><td>Total Fat</td><td>0.1g</td><td>0%</td></tr>
+            <tr><td>Cholesterol</td><td>0mg</td><td>0%</td></tr>
+            <tr><td>Total Carbohydrate</td><td>76.9g</td><td>28%</td></tr>
+            <tr><td>Dietary Fibre</td><td>14.5g</td><td>52%</td></tr>
+            <tr><td>Total Sugars</td><td>0g</td><td>—</td></tr>
+            <tr><td>Sodium</td><td>15mg</td><td>1%</td></tr>
+            <tr><td>Calcium</td><td>60mg</td><td>6%</td></tr>
+            <tr><td>Magnesium</td><td>67mg</td><td>16%</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:10px; font-weight:300;">* % Daily Values based on a 2,000 calorie diet.</div>
+      </div>
+      <div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+          <div style="background:var(--cream-2); border-radius:14px; padding:18px 16px; border:1px solid var(--border);">
+            <div style="font-family:var(--font-heading); font-size:28px; font-weight:700; color:var(--green); line-height:1; margin-bottom:4px;">9.7<span style="font-size:13px; font-weight:400; color:var(--text-muted);">g</span></div>
+            <div style="font-size:12px; color:var(--text-muted); font-weight:300;">Protein per 100g</div>
+          </div>
+          <div style="background:var(--cream-2); border-radius:14px; padding:18px 16px; border:1px solid var(--border);">
+            <div style="font-family:var(--font-heading); font-size:28px; font-weight:700; color:var(--green); line-height:1; margin-bottom:4px;">347<span style="font-size:13px; font-weight:400; color:var(--text-muted);">kcal</span></div>
+            <div style="font-size:12px; color:var(--text-muted); font-weight:300;">Calories per 100g</div>
+          </div>
+          <div style="background:var(--cream-2); border-radius:14px; padding:18px 16px; border:1px solid var(--border);">
+            <div style="font-family:var(--font-heading); font-size:28px; font-weight:700; color:var(--green); line-height:1; margin-bottom:4px;">0<span style="font-size:13px; font-weight:400; color:var(--text-muted);">mg</span></div>
+            <div style="font-size:12px; color:var(--text-muted); font-weight:300;">Cholesterol</div>
+          </div>
+          <div style="background:var(--cream-2); border-radius:14px; padding:18px 16px; border:1px solid var(--border);">
+            <div style="font-family:var(--font-heading); font-size:28px; font-weight:700; color:var(--green); line-height:1; margin-bottom:4px;">Low</div>
+            <div style="font-size:12px; color:var(--text-muted); font-weight:300;">Glycaemic Index</div>
+          </div>
+        </div>
+        <div style="background:var(--green-pale); border-radius:14px; padding:18px; border:1px solid rgba(74,103,65,0.15);">
+          <div style="font-size:13px; font-weight:600; color:var(--green); margin-bottom:8px;">✅ Suitable For</div>
+          <div style="display:flex; flex-direction:column; gap:6px; font-size:13px; color:var(--text-mid); font-weight:300;">
+            <span>• Weight loss &amp; calorie-conscious diets</span>
+            <span>• Diabetic-friendly (low GI)</span>
+            <span>• Gluten-free diets</span>
+            <span>• Vegan &amp; vegetarian</span>
+            <span>• Kids (age 3+) &amp; elderly</span>
+            <span>• Post-workout snacking</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ingredients Tab -->
+  <div class="tab-panel js-tab-panel" data-tab-panel="ingredients">
+    <div style="max-width:640px;">
+      <h3 style="font-family:var(--font-heading); font-size:22px; font-weight:700; color:var(--brown-dark); margin-bottom:14px;">What's Inside</h3>
+      <div style="background:var(--cream-2); border-radius:14px; padding:20px 22px; margin-bottom:14px; border:1px solid var(--border);">
+        <p style="font-size:15px; font-weight:500; color:var(--brown-dark); margin-bottom:6px;">Fox Nuts (Euryale Ferox) — 98.5%</p>
+        <span style="font-size:13px; color:var(--text-muted); font-weight:300;">Sourced exclusively from certified partner farms in Darbhanga and Madhubani, Bihar. Hand-harvested, sun-dried, and mechanically popped.</span>
+      </div>
+      <div style="background:var(--cream-2); border-radius:14px; padding:20px 22px; margin-bottom:14px; border:1px solid var(--border);">
+        <p style="font-size:15px; font-weight:500; color:var(--brown-dark); margin-bottom:6px;">Pure Desi Ghee (Cow) — 1.5%</p>
+        <span style="font-size:13px; color:var(--text-muted); font-weight:300;">Used in minimal quantities for roasting. Sourced from local dairy cooperatives in Bihar.</span>
+      </div>
+      <div style="background:var(--green-pale); border-radius:14px; padding:20px 22px; margin-bottom:14px; border:1px solid rgba(74,103,65,0.15);">
+        <p style="font-size:15px; font-weight:500; color:var(--green); margin-bottom:6px;">✅ Contains NO:</p>
+        <span style="font-size:13px; color:var(--text-muted); font-weight:300;">Artificial flavours · Artificial colours · Preservatives · Added salt · Added sugar · MSG · Palm oil · Gluten</span>
+      </div>
+      <div style="background:var(--gold-pale); border: 1px solid rgba(201,168,76,0.25); border-radius:10px; padding:14px 16px; display:flex; gap:10px; align-items:flex-start; margin-bottom:16px;">
+        <span>⚠️</span>
+        <span style="font-size:13px; color:var(--brown-mid); line-height:1.65; font-weight:300;"><strong>Allergen info:</strong> Manufactured in a facility that also processes tree nuts and dairy. May contain trace amounts.</span>
+      </div>
+      <div style="font-size:13px; color:var(--text-muted); line-height:1.7; font-weight:300;">
+        <strong style="color:var(--brown-dark); display:block; margin-bottom:6px;">Storage Instructions</strong>
+        Store in a cool, dry place away from direct sunlight. Reseal after opening. Best consumed within 45 days of opening. Do not refrigerate.
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Tab -->
+  <div class="tab-panel js-tab-panel" data-tab-panel="reviews">
+    <div class="reviews-layout">
+      <div class="reviews-summary">
+        <div class="rs-big-num">4.9</div>
+        <div class="rs-stars">⭐⭐⭐⭐⭐</div>
+        <div class="rs-count">486 verified reviews</div>
+        <div class="rating-bars">
+          <div class="rating-bar-row"><span class="rating-bar-label">5★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:88%;"></div></div><span class="rating-bar-count">428</span></div>
+          <div class="rating-bar-row"><span class="rating-bar-label">4★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:9%; background:var(--terra-light);"></div></div><span class="rating-bar-count">44</span></div>
+          <div class="rating-bar-row"><span class="rating-bar-label">3★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:2%; background:var(--cream-3);"></div></div><span class="rating-bar-count">10</span></div>
+          <div class="rating-bar-row"><span class="rating-bar-label">2★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:1%; background:var(--cream-3);"></div></div><span class="rating-bar-count">4</span></div>
+          <div class="rating-bar-row"><span class="rating-bar-label">1★</span><div class="rating-bar-track"><div class="rating-bar-fill" style="width:0%;"></div></div><span class="rating-bar-count">0</span></div>
+        </div>
+      </div>
+      <div class="reviews-list">
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar" style="background:var(--terra-pale);color:var(--terra);">P</div>
+              <div><div class="reviewer-name">Priya Sharma</div><div class="reviewer-meta">Mumbai · June 2026</div></div>
+            </div>
+            <span class="review-rating">⭐⭐⭐⭐⭐</span>
+          </div>
+          <div class="review-title">Best makhana I've ever had — and I've tried 8 brands</div>
+          <div class="review-body">The crunch is incredible. Tal Makhana stays crispy even after a week if you reseal properly. My whole family is hooked. I've switched to the 1kg subscription now.</div>
+          <span class="review-verified">✓ Verified Purchase</span>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar" style="background:var(--green-pale);color:var(--green);">R</div>
+              <div><div class="reviewer-name">Rohit Verma</div><div class="reviewer-meta">Delhi · May 2026</div></div>
+            </div>
+            <span class="review-rating">⭐⭐⭐⭐⭐</span>
+          </div>
+          <div class="review-title">My diabetic father loves this — doctor approved!</div>
+          <div class="review-body">We were looking for a safe evening snack for my father who has Type 2 diabetes. His nutritionist suggested makhana. Clean ingredient list with no hidden additives.</div>
+          <span class="review-verified">✓ Verified Purchase</span>
+        </div>
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar" style="background:var(--gold-pale);color:var(--brown-mid);">A</div>
+              <div><div class="reviewer-name">Ananya Iyer</div><div class="reviewer-meta">Bangalore · June 2026</div></div>
+            </div>
+            <span class="review-rating">⭐⭐⭐⭐⭐</span>
+          </div>
+          <div class="review-title">Replaced my 3pm chips habit completely</div>
+          <div class="review-body">I work from home and was snacking on chips every afternoon. Switched to a small bowl of Tal Makhana. It keeps me full until dinner and I don't feel guilty.</div>
+          <span class="review-verified">✓ Verified Purchase</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Related Products -->
+<div class="related">
+  <div class="related-header">
+    <div class="section__title">You Might Also <em>Like</em></div>
+    <a href="/collections/all" class="products__view-all">View All →</a>
+  </div>
+  <div class="related-grid">
+    {%- assign related_collection = collections['all'] -%}
+    {%- for related_product in related_collection.products limit: 4 -%}
+      {%- unless related_product.id == product.id -%}
+        <a href="{{ related_product.url }}" class="related-card">
+          <div class="related-img" style="background: linear-gradient(135deg, var(--cream-2), var(--cream-3));">
+            {%- if related_product.featured_image -%}
+              {{ related_product.featured_image | image_url: width: 300 | image_tag: alt: related_product.title, loading: 'lazy' }}
+            {%- else -%}
+              <span>🌰</span>
+            {%- endif -%}
+          </div>
+          <div class="related-body">
+            <div class="related-name">{{ related_product.title }}</div>
+            <div class="related-from">From {{ related_product.price_min | money }}</div>
+            <div class="related-price">{{ related_product.price_min | money }}</div>
+          </div>
+        </a>
+      {%- endunless -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+<script>
+// Expose variant data for JS selector
+window.productVariants = {{ product.variants | json }};
+</script>

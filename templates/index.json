@@ -1,0 +1,133 @@
+{
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "show_announcement": true,
+        "text_1": "🚚 Free delivery on orders above ₹499",
+        "text_2": "🌾 Direct from Bihar farms",
+        "text_3": "✅ Grade A Makhana — No Preservatives"
+      }
+    },
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "tag_text": "Hand-harvested from Bihar's Mithila wetlands",
+        "heading": "Bihar's Finest\nFox Nuts",
+        "description": "Hand-harvested makhana from Bihar's pristine ponds. Roasted to perfection with pure desi ghee. No preservatives, no compromise.",
+        "cta_1_text": "Shop Now →",
+        "cta_2_text": "See Benefits",
+        "pill_1": "100% Natural",
+        "pill_2": "FSSAI Certified",
+        "pill_3": "Direct from Farms"
+      }
+    },
+    "benefits-bar": {
+      "type": "benefits-bar",
+      "settings": {
+        "icon_1": "🚚",
+        "text_1": "Free delivery above ₹499",
+        "icon_2": "🌿",
+        "text_2": "No preservatives added",
+        "icon_3": "🔬",
+        "text_3": "Lab tested every batch",
+        "icon_4": "📋",
+        "text_4": "FSSAI Certified",
+        "icon_5": "🔄",
+        "text_5": "7-Day easy returns",
+        "section_heading": "Goodness in Every Bite",
+        "section_desc": "Makhana is one of nature's most complete superfoods — and we source only the finest Grade A from Bihar's pristine ponds."
+      },
+      "blocks": {
+        "benefit-1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "💪",
+            "title": "High in Protein",
+            "description": "9.7g of protein per 100g — more than most nuts. Perfect for post-workout snacking."
+          }
+        },
+        "benefit-2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "📉",
+            "title": "Low Glycaemic Index",
+            "description": "Safe for diabetics and weight-watchers. Makhana won't spike your blood sugar."
+          }
+        },
+        "benefit-3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "🌿",
+            "title": "Zero Preservatives",
+            "description": "No artificial colours, flavours, or preservatives. Just pure, natural makhana."
+          }
+        },
+        "benefit-4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "🔥",
+            "title": "Only 347 Calories",
+            "description": "A large bowl has fewer calories than a small bag of chips. Guilt-free snacking."
+          }
+        },
+        "benefit-5": {
+          "type": "benefit",
+          "settings": {
+            "icon": "🌾",
+            "title": "Gluten-Free",
+            "description": "Naturally gluten-free and suitable for celiac diets. Safe for the whole family."
+          }
+        },
+        "benefit-6": {
+          "type": "benefit",
+          "settings": {
+            "icon": "🧘",
+            "title": "Ayurvedic Superfood",
+            "description": "Mentioned in ancient Ayurvedic texts as a sattvic food that promotes calm and longevity."
+          }
+        }
+      },
+      "blocks_order": ["benefit-1", "benefit-2", "benefit-3", "benefit-4", "benefit-5", "benefit-6"]
+    },
+    "featured-products": {
+      "type": "featured-products",
+      "settings": {
+        "section_label": "Our Products",
+        "heading": "Crafted for the Health-Conscious",
+        "description": "Six flavours, one standard — Bihar's finest. Each batch is hand-selected, lab-tested, and packed fresh.",
+        "products_to_show": 6
+      }
+    },
+    "blog-preview": {
+      "type": "blog-preview",
+      "settings": {
+        "label": "From Our Kitchen",
+        "heading": "Recipes, Tips & Stories",
+        "description": "Makhana recipes, health tips and farm stories — published fresh, every week.",
+        "posts_to_show": 3
+      }
+    },
+    "youtube-preview": {
+      "type": "youtube-preview",
+      "settings": {
+        "label": "Latest Video",
+        "video_title": "Makhana Kheer — Creamy Indian Dessert in 15 Minutes",
+        "channel_name": "Tal Makhana",
+        "channel_handle": "@talmakhana · YouTube",
+        "subscriber_count": "48K",
+        "video_count": "120+",
+        "view_count": "2.4M",
+        "cta_heading": "Never Miss a New Recipe",
+        "cta_desc": "New makhana recipes and health videos every week. Subscribe free and hit the bell."
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "benefits-bar",
+    "featured-products",
+    "blog-preview",
+    "youtube-preview"
+  ]
+}

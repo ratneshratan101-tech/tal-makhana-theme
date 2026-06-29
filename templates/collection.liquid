@@ -1,0 +1,112 @@
+<!-- Collection Header -->
+<div class="collection-header">
+  <div class="collection-header__inner">
+    <div class="breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a>
+      <span class="breadcrumb__sep">&rsaquo;</span>
+      <span class="breadcrumb__current">{{ collection.title }}</span>
+    </div>
+    <h1 class="section__title">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <p class="section__desc">{{ collection.description }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+<!-- Collection Body -->
+<div class="collection-body">
+  <div class="collection-sort">
+    <span class="collection-sort__count">
+      {{ collection.products_count }} product{{ collection.products_count | pluralize: '', 's' }}
+    </span>
+    <select class="collection-sort__select" name="sort_by" onchange="location.href='?sort_by='+this.value">
+      {%- for option in collection.sort_options -%}
+        <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>
+          {{ option.name }}
+        </option>
+      {%- endfor -%}
+    </select>
+  </div>
+
+  <div class="products__grid">
+    {%- paginate collection.products by 12 -%}
+      {%- for product in collection.products -%}
+        <a href="{{ product.url }}" class="product-card">
+          <div class="product-card__img"
+               style="background: linear-gradient(135deg, var(--cream-2), var(--cream-3));">
+            {%- if product.featured_image -%}
+              {{ product.featured_image | image_url: width: 400 | image_tag:
+                alt: product.featured_image.alt,
+                loading: 'lazy' }}
+            {%- else -%}
+              <span>🌰</span>
+            {%- endif -%}
+            <div class="product-card__badges">
+              {%- if product.tags contains 'bestseller' -%}
+                <span class="product-card__badge product-card__badge--bestseller">Bestseller</span>
+              {%- endif -%}
+              {%- if product.tags contains 'new' -%}
+                <span class="product-card__badge product-card__badge--new">New</span>
+              {%- endif -%}
+            </div>
+            <button class="product-card__quick-add"
+                    onclick="event.preventDefault(); window.TalMakhana && TalMakhana.cart.add({{ product.variants.first.id }}, 1);"
+                    aria-label="Quick add {{ product.title }}">
+              + Add to Cart
+            </button>
+          </div>
+          <div class="product-card__body">
+            <h2 class="product-card__title">{{ product.title }}</h2>
+            {%- if product.description != blank -%}
+              <p class="product-card__desc">{{ product.description | strip_html }}</p>
+            {%- endif -%}
+            <div class="product-card__footer">
+              <div>
+                <span class="product-card__price">{{ product.price_min | money }}</span>
+                {%- if product.compare_at_price_min > product.price_min -%}
+                  <span class="product-card__compare-price">{{ product.compare_at_price_min | money }}</span>
+                {%- endif -%}
+                {%- if product.variants.size > 1 -%}
+                  <div class="product-card__from">Multiple sizes available</div>
+                {%- endif -%}
+              </div>
+              {%- if product.available -%}
+                <span class="product-card__savings" style="background:var(--green-pale); color:var(--green);">In Stock</span>
+              {%- else -%}
+                <span class="product-card__savings" style="background:#FEF3F2; color:#C62828;">Sold Out</span>
+              {%- endif -%}
+            </div>
+          </div>
+        </a>
+      {%- endfor -%}
+
+      {%- if collection.products.size == 0 -%}
+        <div class="empty-state" style="grid-column:1/-1;">
+          <div class="empty-state__emoji">🔍</div>
+          <h2 class="empty-state__title">No products found</h2>
+          <p class="empty-state__desc">Try adjusting your filters or browse all our products.</p>
+          <a href="/collections/all" class="btn btn--primary">Browse All Products</a>
+        </div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+
+  <!-- Pagination -->
+  {%- if paginate.pages > 1 -%}
+    <div style="display:flex; justify-content:center; gap:8px; margin-top:48px; flex-wrap:wrap;">
+      {%- if paginate.previous -%}
+        <a href="{{ paginate.previous.url }}" class="btn btn--outline btn--sm">← Previous</a>
+      {%- endif -%}
+      {%- for part in paginate.parts -%}
+        {%- if part.is_link -%}
+          <a href="{{ part.url }}" class="btn btn--outline btn--sm">{{ part.title }}</a>
+        {%- else -%}
+          <span class="btn btn--primary btn--sm">{{ part.title }}</span>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if paginate.next -%}
+        <a href="{{ paginate.next.url }}" class="btn btn--outline btn--sm">Next →</a>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>

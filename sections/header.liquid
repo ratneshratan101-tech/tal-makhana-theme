@@ -1,0 +1,117 @@
+<header class="site-header" role="banner">
+  <!-- Logo -->
+  <a href="{{ routes.root_url }}" class="site-header__logo" aria-label="{{ shop.name }} home">
+    <div class="site-header__logo-circle" aria-hidden="true">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 72 | image_tag: alt: shop.name, class: 'site-header__logo-img' }}
+      {%- else -%}
+        <span style="font-size:16px;color:white;font-weight:700;">TM</span>
+      {%- endif -%}
+    </div>
+    <div class="site-header__logo-text">
+      <span>{{ section.settings.logo_text | default: shop.name }}</span>
+      <span>{{ section.settings.tagline | default: "Bihar's Finest Fox Nuts" }}</span>
+    </div>
+  </a>
+
+  <!-- Desktop Nav -->
+  <nav aria-label="Main navigation">
+    <ul class="site-header__nav">
+      {%- for link in linklists[section.settings.menu].links -%}
+        <li>
+          <a href="{{ link.url }}"
+             {% if link.active %}class="active" aria-current="page"{% endif %}>
+            {{ link.title }}
+          </a>
+        </li>
+      {%- else -%}
+        <li><a href="/collections/all">Shop</a></li>
+        <li><a href="/#benefits">Benefits</a></li>
+        <li><a href="/blogs/recipes">Recipes</a></li>
+        <li><a href="/blogs/news">Blog</a></li>
+        <li><a href="/pages/where-to-buy">Where to Buy</a></li>
+      {%- endfor -%}
+    </ul>
+  </nav>
+
+  <!-- Actions -->
+  <div class="site-header__actions">
+    <!-- Cart Button -->
+    <button
+      class="site-header__cart-btn js-open-cart"
+      aria-label="Open cart, {{ cart.item_count }} items"
+      aria-haspopup="dialog">
+      <svg class="site-header__cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      <span>Cart</span>
+      <span class="site-header__cart-count {% if cart.item_count > 0 %}visible{% endif %}" aria-live="polite">
+        {{ cart.item_count }}
+      </span>
+    </button>
+
+    <!-- Shop Now btn (desktop) -->
+    <a href="/collections/all" class="btn btn--primary btn--sm" style="display:none;" data-show-desktop>
+      Shop Now
+    </a>
+
+    <!-- Mobile toggle -->
+    <button class="site-header__mobile-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+      ☰
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Nav -->
+<nav id="mobile-nav" class="site-header__mobile-nav" aria-label="Mobile navigation">
+  {%- for link in linklists[section.settings.menu].links -%}
+    <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
+      {{ link.title }}
+    </a>
+  {%- else -%}
+    <a href="/collections/all">Shop</a>
+    <a href="/#benefits">Benefits</a>
+    <a href="/blogs/recipes">Recipes</a>
+    <a href="/blogs/news">Blog</a>
+    <a href="/pages/where-to-buy">Where to Buy</a>
+  {%- endfor -%}
+  <a href="/collections/all" class="btn btn--primary" style="width:fit-content;margin-top:8px;">Shop Now →</a>
+</nav>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image (optional)"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Brand Name",
+      "default": "Tal Makhana"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline (below logo)",
+      "default": "Bihar's Finest Fox Nuts"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Navigation Menu",
+      "default": "main-menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header"
+    }
+  ]
+}
+{% endschema %}
