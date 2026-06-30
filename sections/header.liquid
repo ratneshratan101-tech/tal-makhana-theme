@@ -17,20 +17,12 @@
   <!-- Desktop Nav -->
   <nav aria-label="Main navigation">
     <ul class="site-header__nav">
-      {%- for link in linklists[section.settings.menu].links -%}
-        <li>
-          <a href="{{ link.url }}"
-             {% if link.active %}class="active" aria-current="page"{% endif %}>
-            {{ link.title }}
-          </a>
-        </li>
-      {%- else -%}
-        <li><a href="/collections/all">Shop</a></li>
-        <li><a href="/#benefits">Benefits</a></li>
-        <li><a href="/blogs/recipes">Recipes</a></li>
-        <li><a href="/blogs/news">Blog</a></li>
-        <li><a href="/pages/where-to-buy">Where to Buy</a></li>
-      {%- endfor -%}
+      <li><a href="/collections/all">Shop</a></li>
+      <li><a href="/#benefits">Benefits</a></li>
+      <li><a href="/blogs/recipes">Recipes</a></li>
+      <li><a href="/blogs/news">Blog</a></li>
+      <li><a href="/pages/where-to-buy">Where to Buy</a></li>
+      <li><a href="/collections/all" class="site-header__nav-shop-btn">Shop Now →</a></li>
     </ul>
   </nav>
 
@@ -66,17 +58,11 @@
 
 <!-- Mobile Nav -->
 <nav id="mobile-nav" class="site-header__mobile-nav" aria-label="Mobile navigation">
-  {%- for link in linklists[section.settings.menu].links -%}
-    <a href="{{ link.url }}" {% if link.active %}aria-current="page"{% endif %}>
-      {{ link.title }}
-    </a>
-  {%- else -%}
-    <a href="/collections/all">Shop</a>
-    <a href="/#benefits">Benefits</a>
-    <a href="/blogs/recipes">Recipes</a>
-    <a href="/blogs/news">Blog</a>
-    <a href="/pages/where-to-buy">Where to Buy</a>
-  {%- endfor -%}
+  <a href="/collections/all">Shop</a>
+  <a href="/#benefits">Benefits</a>
+  <a href="/blogs/recipes">Recipes</a>
+  <a href="/blogs/news">Blog</a>
+  <a href="/pages/where-to-buy">Where to Buy</a>
   <a href="/collections/all" class="btn btn--primary" style="width:fit-content;margin-top:8px;">Shop Now →</a>
 </nav>
 
