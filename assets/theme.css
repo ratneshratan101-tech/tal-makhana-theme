@@ -307,6 +307,18 @@ em { color: var(--terra); font-style: italic; }
 }
 
 .site-header__nav a.active { font-weight: 600; }
+.site-header__nav-shop-btn {
+  background: var(--terra);
+  color: var(--white) !important;
+  padding: 9px 20px;
+  border-radius: 100px;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+}
+.site-header__nav-shop-btn:hover {
+  background: var(--brown-mid) !important;
+  color: var(--white) !important;
+}
 
 .site-header__actions {
   display: flex;
